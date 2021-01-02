@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script type="module">
+        import * as THREE from './three.module.js';
+        import { OrbitControls } from './OrbitControls.js';
+
+        let scene, camera, renderer, orbit;
+
+        scene = new THREE.Scene();
+
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.01, 30000 );
+        camera.position.set(1, 1, 1);
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+        
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshBasicMaterial()
+        
+        const cube = new THREE.Mesh( geometry, material );
+        scene.add( cube );
+
+        orbit = new OrbitControls(camera, renderer.domElement)
+
+        const loader = new THREE.TextureLoader()
+        loader.load('./mokeywit-logo.png', (texture)=>{
+            material.map = texture
+            animate()
+        })
+
+        function animate() {
+            requestAnimationFrame(animate)
+            cube.rotation.x += 0.01
+            cube.rotation.y += 0.01
+            renderer.render(scene, camera)
+        }
+    </script>
+    
+</body>
+</html>
